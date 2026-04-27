@@ -6,6 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,16 +25,20 @@ class BookServiceTest {
     BookRepository bookRepository;
     @Mock
     Book book;
+    @Mock
+    PageRequest pageRequest;
     @InjectMocks
     BookService bookService;
 
     @Test
     void getAllBooks() {
-        when(bookRepository.findAll()).thenReturn(List.of(book, book));
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("DESC"));
+        Page<Book> mockPage = new PageImpl<>(List.of(new Book(), new Book()), pageRequest, 2);
+        when(bookRepository.findAll(any(PageRequest.class))).thenReturn(mockPage);
 
-        List<Book> result = bookService.getAllBooks();
+        Page<Book> result = bookService.getAllBooks(pageRequest);
 
-        assertEquals(result.size(), 2);
+        assertEquals(result.stream().count(), 2);
     }
 
     @Test
@@ -54,5 +62,14 @@ class BookServiceTest {
         Book book = bookService.getBook(1L);
 
         assertNotNull(book);
+    }
+
+    @Test
+    void searchBooks() {
+        when(bookRepository.searchBooks(anyString(), anyString())).thenReturn(List.of(book, book));
+
+        List<Book> results = bookService.searchBooks("", "George");
+
+        assertEquals(results.size(), 2);
     }
 }

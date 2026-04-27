@@ -2,6 +2,9 @@ package com.amigoscode.interview.book;
 
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,9 @@ public class BookController {
 
     // Returns entities directly — no DTOs (intentional issue)
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
+    public ResponseEntity<Page<Book>> getAllBooks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String sort ) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+        return ResponseEntity.ok(bookService.getAllBooks(pageRequest));
     }
 
     // No input validation (intentional issue)

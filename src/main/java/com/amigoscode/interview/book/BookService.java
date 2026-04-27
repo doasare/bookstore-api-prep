@@ -1,5 +1,8 @@
 package com.amigoscode.interview.book;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +19,8 @@ public class BookService {
 
     // N+1 problem: fetching all books triggers separate queries
     // for each book's author and reviews due to lazy loading
-    public List<Book> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
+    public Page<Book> getAllBooks(PageRequest pageRequest) {
+        Page<Book> books = bookRepository.findAll(pageRequest);
         // Accessing author name forces lazy load — one query per book
         books.forEach(book -> {
             if (book.getAuthor() != null) {
