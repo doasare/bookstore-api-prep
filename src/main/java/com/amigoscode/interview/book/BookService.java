@@ -39,6 +39,8 @@ public class BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
-    // NOTE: getBookById() is intentionally missing — interview task #1
+    public List<Book> searchBooks(String genre, String authorName) {
+        return bookRepository.searchBooks(genre, authorName);
+    }
 
 }
