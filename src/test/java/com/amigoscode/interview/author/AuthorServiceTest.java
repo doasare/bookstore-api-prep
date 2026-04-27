@@ -27,7 +27,7 @@ class AuthorServiceTest {
 
         List<Author> result = authorService.getAllAuthors();
 
-        assertEquals(result.size(), 2);
+        assertEquals(2, result.size());
     }
 
     @Test

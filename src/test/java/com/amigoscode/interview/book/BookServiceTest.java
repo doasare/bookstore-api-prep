@@ -25,20 +25,18 @@ class BookServiceTest {
     BookRepository bookRepository;
     @Mock
     Book book;
-    @Mock
-    PageRequest pageRequest;
     @InjectMocks
     BookService bookService;
 
     @Test
     void getAllBooks() {
         PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("DESC"));
-        Page<Book> mockPage = new PageImpl<>(List.of(new Book(), new Book()), pageRequest, 2);
+        Page<Book> mockPage = new PageImpl<>(List.of(book, book), pageRequest, 2);
         when(bookRepository.findAll(any(PageRequest.class))).thenReturn(mockPage);
 
         Page<Book> result = bookService.getAllBooks(pageRequest);
 
-        assertEquals(result.stream().count(), 2);
+        assertEquals(2, result.stream().count());
     }
 
     @Test
@@ -70,6 +68,6 @@ class BookServiceTest {
 
         List<Book> results = bookService.searchBooks("", "George");
 
-        assertEquals(results.size(), 2);
+        assertEquals(2, results.size());
     }
 }

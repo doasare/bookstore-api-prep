@@ -2,6 +2,7 @@ package com.amigoscode.interview.review;
 
 import com.amigoscode.interview.book.Book;
 import com.amigoscode.interview.book.BookRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,34 +16,22 @@ import java.util.List;
 // No service layer — repository injected directly (intentional issue)
 @RestController
 @RequestMapping("/api/reviews")
+@RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewRepository reviewRepository;
-    private final BookRepository bookRepository;
-
-    public ReviewController(ReviewRepository reviewRepository,
-                            BookRepository bookRepository) {
-        this.reviewRepository = reviewRepository;
-        this.bookRepository = bookRepository;
-    }
-
+    private final ReviewService reviewService;
+    
     @GetMapping("/book/{bookId}")
-    public ResponseEntity<Page<Review>> getReviewsByBookId(@PathVariable Long bookId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String sort ) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Page<Review> reviews = reviewRepository.findByBookId(bookId, pageRequest);
+    public ResponseEntity<Page<ReviewResponse>> getReviewsByBookId(@PathVariable Long bookId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String sort ) {
+        Page<ReviewResponse> reviews = reviewService.getReviews(bookId, PageRequest.of(page, size, Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(reviews);
     }
 
     @PostMapping("/book/{bookId}")
-    public ResponseEntity<Review> createReview(
+    public ResponseEntity<ReviewResponse> createReview(
             @PathVariable Long bookId,
-            @RequestBody Review review) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
-        review.setBook(book);
-        review.setCreatedAt(LocalDateTime.now());
-        Review saved = reviewRepository.save(review);
+            @RequestBody ReviewRequest reviewRequest) {
+        ReviewResponse saved = reviewService.createReview(bookId, reviewRequest);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-
 }
