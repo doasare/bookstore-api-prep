@@ -44,11 +44,7 @@ public class BookController {
     // NOTE: GET /api/books/{id} is intentionally missing — interview task #1
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id){
-        Book book = bookService.getBook(id);
-        if (book != null){
-            return ResponseEntity.ok(book);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(bookService.getBook(id));
     }
 
     @GetMapping("/search")

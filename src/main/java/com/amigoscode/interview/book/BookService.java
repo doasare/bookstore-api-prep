@@ -1,5 +1,6 @@
 package com.amigoscode.interview.book;
 
+import com.amigoscode.interview.config.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,9 @@ public class BookService {
     }
 
     public Book getBook(Long id) {
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String
+                        .format("Book with id:%s not found", id)));
     }
 
     public List<Book> searchBooks(String genre, String authorName) {
