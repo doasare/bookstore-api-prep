@@ -36,8 +36,7 @@ public class BookService {
     }
 
     public Book getBook(Long id) {
-        Optional<Book> opBook = bookRepository.findById(id);
-        return opBook.orElse(null);
+        return bookRepository.findById(id).orElse(null);
     }
 
     // NOTE: getBookById() is intentionally missing — interview task #1
