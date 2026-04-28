@@ -4,6 +4,7 @@ import com.amigoscode.interview.author.Author;
 import com.amigoscode.interview.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.annotations.BatchSize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,7 @@ public class Book {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"book"})
+    @BatchSize(size = 20)
     private List<Review> reviews = new ArrayList<>();
 
 }
