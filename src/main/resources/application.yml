@@ -1,7 +1,10 @@
 spring:
   application:
     name: interview-practice
-
+  cache:
+    type: jcache
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
   datasource:
     url: jdbc:h2:mem:interviewdb
     driver-class-name: org.h2.Driver
@@ -28,3 +31,15 @@ spring:
 
 server:
   port: 8080
+
+bucket4j:
+  enabled: true
+  cache-to-use: jcache
+  filters:
+    - cache-name: caffeine  # This MUST match the string in cacheManager.getCache("caffeine")
+      url: ".*"
+      rate-limits:
+        - bandwidths:
+            - capacity: 10
+              time: 1
+              unit: minutes
