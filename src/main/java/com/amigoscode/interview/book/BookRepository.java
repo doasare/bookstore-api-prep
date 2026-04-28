@@ -24,4 +24,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             @Param("authorName") String authorName
     );
 
+    @Query("SELECT b FROM Book b JOIN b.reviews r GROUP BY b ORDER BY AVG(r.rating) DESC")
+    List<Book> findTop5ByOrderByReviewRatingDesc(Pageable pageable);
+
+    @Query("SELECT b FROM Book b JOIN b.reviews r GROUP BY b ORDER BY COUNT(r) DESC")
+    List<Book> findTopBooks(Pageable pageable);
+
+    @Query("SELECT new com.amigoscode.interview.book.StatsService$GenreRating(b.genre, AVG(r.rating)) " +
+            "FROM Book b JOIN b.reviews r GROUP BY b.genre")
+    List<StatsService.GenreRating> findAvgRatingPerGenre();
 }

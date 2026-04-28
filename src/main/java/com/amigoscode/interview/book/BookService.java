@@ -33,12 +33,12 @@ public class BookService {
         return books;
     }
 
-    @CacheEvict(value = {"getAllBooks", "searchBooks", "getBook"}, allEntries = true)
+    @CacheEvict(value = {"getAllBooks", "searchBooks", "getBook", "getLibraryStats"}, allEntries = true)
     public Book createBook(Book book) {
         return bookRepository.save(book);
     }
 
-    @CacheEvict(value = {"getAllBooks", "searchBooks", "getBook"}, allEntries = true)
+    @CacheEvict(value = {"getAllBooks", "searchBooks", "getBook", "getLibraryStats"}, allEntries = true)
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }

@@ -16,9 +16,11 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final StatsService statsService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, StatsService statsService) {
         this.bookService = bookService;
+        this.statsService = statsService;
     }
 
     @GetMapping
@@ -49,5 +51,9 @@ public class BookController {
         return ResponseEntity.ok(bookService.searchBooks(genre, authorName));
     }
 
+    @GetMapping("/stats")
+    public ResponseEntity<StatsService.BookStatsResponse> getStats(){
+        return ResponseEntity.ok(statsService.getBookStats());
+    }
 
 }
