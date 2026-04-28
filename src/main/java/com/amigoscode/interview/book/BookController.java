@@ -21,14 +21,12 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // Returns entities directly — no DTOs (intentional issue)
     @GetMapping
     public ResponseEntity<Page<Book>> getAllBooks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String sort ) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
         return ResponseEntity.ok(bookService.getAllBooks(pageRequest));
     }
 
-    // No input validation (intentional issue)
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody @Valid Book book) {
         Book created = bookService.createBook(book);
@@ -41,7 +39,6 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    // NOTE: GET /api/books/{id} is intentionally missing — interview task #1
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id){
         return ResponseEntity.ok(bookService.getBook(id));
