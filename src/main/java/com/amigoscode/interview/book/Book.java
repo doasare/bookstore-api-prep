@@ -1,6 +1,7 @@
 package com.amigoscode.interview.book;
 
 import com.amigoscode.interview.author.Author;
+import com.amigoscode.interview.category.Category;
 import com.amigoscode.interview.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -15,7 +16,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -51,5 +54,12 @@ public class Book {
     @JsonIgnoreProperties({"book"})
     @BatchSize(size = 20)
     private List<Review> reviews = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "books_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
 
 }

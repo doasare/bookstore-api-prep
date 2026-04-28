@@ -34,7 +34,31 @@ INSERT INTO reviews (id, reviewer_name, content, rating, created_at, book_id) VA
 INSERT INTO reviews (id, reviewer_name, content, rating, created_at, book_id) VALUES (14, 'Noah Clark', 'The social commentary is sharp and still resonates.', 4, '2024-08-10T16:00:00', 9);
 INSERT INTO reviews (id, reviewer_name, content, rating, created_at, book_id) VALUES (15, 'Olivia Hall', 'A beautiful story about love and good sense. Underrated compared to Pride and Prejudice.', 4, '2024-08-15T09:30:00', 10);
 
+-- Categories
+INSERT INTO category (id, name) VALUES (1, 'Fiction');
+INSERT INTO category (id, name) VALUES (2, 'Science Fiction');
+INSERT INTO category (id, name) VALUES (3, 'Fantasy');
+INSERT INTO category (id, name) VALUES (4, 'Classic');
+INSERT INTO category (id, name) VALUES (5, 'Romance');
+
+-- Books to Categories
+INSERT INTO books_categories (book_id, category_id) VALUES (1, 1);
+INSERT INTO books_categories (book_id, category_id) VALUES (1, 4);
+INSERT INTO books_categories (book_id, category_id) VALUES (2, 1);
+INSERT INTO books_categories (book_id, category_id) VALUES (2, 4);
+INSERT INTO books_categories (book_id, category_id) VALUES (3, 3);
+INSERT INTO books_categories (book_id, category_id) VALUES (4, 3);
+INSERT INTO books_categories (book_id, category_id) VALUES (5, 1);
+INSERT INTO books_categories (book_id, category_id) VALUES (6, 1);
+INSERT INTO books_categories (book_id, category_id) VALUES (7, 2);
+INSERT INTO books_categories (book_id, category_id) VALUES (8, 2);
+INSERT INTO books_categories (book_id, category_id) VALUES (9, 4);
+INSERT INTO books_categories (book_id, category_id) VALUES (9, 5);
+INSERT INTO books_categories (book_id, category_id) VALUES (10, 4);
+INSERT INTO books_categories (book_id, category_id) VALUES (10, 5);
+
 -- Reset identity sequences so new inserts get IDs after seeded data
 ALTER TABLE authors ALTER COLUMN id RESTART WITH 6;
 ALTER TABLE books ALTER COLUMN id RESTART WITH 11;
 ALTER TABLE reviews ALTER COLUMN id RESTART WITH 16;
+ALTER TABLE category ALTER COLUMN id RESTART WITH 6;
